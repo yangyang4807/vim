@@ -24,7 +24,7 @@ hi LineNr		  term=underline  cterm=bold  ctermfg=darkcyan	guifg=#BD871D
 hi Question		  term=standout  cterm=bold  ctermfg=darkgreen	gui=bold  guifg=Green
 hi StatusLine	  term=bold,reverse  cterm=bold ctermfg=lightblue ctermbg=white gui=bold guifg=blue guibg=white
 hi StatusLineNC   term=reverse	ctermfg=white ctermbg=lightblue guifg=white guibg=blue
-hi Title		  term=bold  cterm=bold  ctermfg=darkmagenta  gui=bold	guifg=Magenta
+hi Title		  term=bold  cterm=bold  ctermfg=lightgrey gui=bold	guifg=Magenta
 hi Visual		  term=reverse	cterm=reverse  gui=reverse
 hi WarningMsg	  term=standout  cterm=bold  ctermfg=darkred guifg=Red
 hi Cursor		  guifg=bg	guibg=#000000
@@ -70,3 +70,4 @@ hi link SpecialChar		Special
 hi link Delimiter		Special
 hi link SpecialComment	Special
 hi link Debug			Special
+let s:darkwhite    = "#4e9a06"
