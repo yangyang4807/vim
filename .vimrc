@@ -353,7 +353,8 @@ Bundle 'gmarik/vundle'
 "
 " original repos on github
 Bundle 'tpope/vim-fugitive'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+"sparkup 支持类jQuery语法的HTML补全工具 这个插件会导致按下tab键就会跳转至下一个空白行，而不是4个空格
+"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'Yggdroot/indentLine'
 "ndle 'tpope/vim-rails.git'
 " vim-scripts repos
