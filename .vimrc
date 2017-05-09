@@ -1,15 +1,13 @@
-set et "编辑时将所有tab替换为空格
-set smartindent "C自动缩进
 
 "set wrap就可以造成屏幕折行，可是却会把一个英文单字折成两半，实在很不雅观。lbr就会避免这种问题发生，会在空白或标点符号的地方来折行，但也仍属屏幕折行，并不会插入 EOL。
 set lbr
 set fo+=mB
 
 set sm
-set selection=inclusive
 set wildmenu
 set mousemodel=popup
 
+"只要有~/.vim/dict 就可以添加下面这些自动提示了
 au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
 au FileType css setlocal dict+=~/.vim/dict/css.dict
 au FileType c setlocal dict+=~/.vim/dict/c.dict
@@ -18,6 +16,18 @@ au FileType scale setlocal dict+=~/.vim/dict/scale.dict
 au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
 au FileType html setlocal dict+=~/.vim/dict/javascript.dict
 au FileType html setlocal dict+=~/.vim/dict/css.dict
+
+"python补全
+let g:pydiction_location = '~/.vim/after/complete-dict'
+let g:pydiction_menu_height = 20
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+""""""""""""""""""""""""""""
+"Omincppcomplete
+"""""""""""""""""""""""""""""
+"下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using ""std::string）
+let OmniCpp_DefaultNamespaces = ["std"]
+
 
 "syntastic相关
 execute pathogen#infect()
@@ -34,19 +44,11 @@ set rtp+=$GOROOT/misc/vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 syntax enable
-"set cul "高亮光标所在行
-"set cuc
 set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示
 set go=             " 不要图形按钮
-"color desert     " 设置背景主题
-"color torte     " 设置背景主题
-color koehler2
-
- "autocmd InsertLeave * se nocul  " 用浅色高亮当前行
- autocmd InsertEnter * se cul    " 用浅色高亮当前行
+color koehler2 "设置主题
 set ruler           " 显示标尺
 set showcmd         " 输入的命令显示出来，看的清楚些
-"set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)
 set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离
 "set foldenable      " 允许折叠
 ""set foldmethod=manual   " 手动折叠
@@ -57,83 +59,59 @@ if version >= 603
 	set encoding=utf-8
     set completeopt=menu,longest,preview  "自动补全Ctrl+p时的一些选项：多于一项时显示菜单，最长选择，显示当前选择的额外信息
 endif
-" 自动缩进
-set autoindent
-set cindent
-" Tab键的宽度
-set tabstop=4
-" 统一缩进为4
-set softtabstop=4
-set shiftwidth=4
-" 使用空格代替制表符
-set expandtab
-" 在行和段开始处使用制表符
-set smarttab
-" 显示行号
+
+set autoindent " 自动缩进
+set cindent "c语言缩进
+set tabstop=4 " Tab键的宽度
+set softtabstop=4 " 统一缩进为4
+set shiftwidth=4 "设定>命令移动时宽度为4 
+set expandtab " 使用空格代替制表符
+set smarttab " 在行和段开始处使用制表符
+set smartindent "C自动缩进
+
 set number
-" 历史记录数
-set history=1000
-"搜索逐字符高亮
-set hlsearch
-set incsearch
+set history=1000 " 历史记录数
+set hlsearch "搜索时高亮显示被找到的文件
+set incsearch "输入搜索内容时就显示搜索结果 
+
 "语言设置
 set langmenu=zh_CN.UTF-8
 set helplang=cn
-" 侦测文件类型
-filetype on
-" 载入文件类型插件
-filetype plugin on
-" 为特定文件类型载入相关缩进文件
-filetype indent on
-filetype plugin indent on
-" 保存全局变量
-set viminfo+=!
-" 带有如下符号的单词不要被换行分割
-set iskeyword+=_,$,@,%,#,-
 
-" 设置当文件被改动时自动载入
-set autoread
+filetype on " 侦测文件类型
+filetype plugin on " 载入文件类型插件
+filetype indent on " 为特定文件类型载入相关缩进文件
+filetype plugin indent on
+set viminfo+=!  " 保存全局变量
+set iskeyword+=_,$,@,%,#,-,. " 带有如下符号的单词不要被换行分割
+
+set autoread " 设置当文件被改动时自动载入
+set autowrite "自动保存
 " quickfix模式
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-"共享剪贴板
-"set clipboard+=unnamed
-"自动保存
-set autowrite
-"set cursorline              " 突出显示当前行 有下划线
+"set clipboard+=unnamed "共享剪贴板
 set magic                   " 设置魔术
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
 ""set foldcolumn=0
 ""set foldmethod=indent
 ""set foldlevel=3
-" 不要使用vi的键盘模式，而是vim自己的
-set nocompatible
-" 去掉输入错误的提示声音
-set noeb
-" 在处理未保存或只读文件的时候，弹出确认
-set confirm
-"禁止生成临时文件
-set nobackup
+set nocompatible " 不要使用vi的键盘模式，而是vim自己的
+set noeb " 去掉输入错误的提示声音
+set confirm " 在处理未保存或只读文件的时候，弹出确认
+set nobackup "禁止生成临时文件
 set noswapfile
 set linespace=0
-" 增强模式中的命令行自动完成操作
-set wildmenu
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
+set wildmenu " 增强模式中的命令行自动完成操作
+set backspace=2 " 使回格键（backspace）正常处理indent, eol, start等
+set mouse=a " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
 set selection=exclusive
 set selectmode=mouse,key
-" 通过使用: commands命令，告诉我们文件的哪一行被改变过
-set report=0
-" 在被分割的窗口间显示空白，便于阅读
-set fillchars=vert:\ ,stl:\ ,stlnc:\
-" 高亮显示匹配的括号
-set showmatch
-" 匹配括号高亮的时间（单位是十分之一秒）
-set matchtime=1
-"垂直缩进对期限
-let g:indentLine_char=' '
+set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
+"set fillchars=vert:\ ,stl:\ ,stlnc:\ " 在被分割的窗口间显示空白，便于阅读
+set showmatch " 高亮显示匹配的括号
+set matchtime=1 " 匹配括号高亮的时间（单位是十分之一秒）
+let g:indentLine_char=' ' "垂直缩进对齐线
 
 
 
@@ -150,7 +128,7 @@ nmap \ \cc
 vmap \ \cc
 
 "将tab替换为空格
-nmap tt :%s/\t/    /g<CR>
+"nmap tt :%s/\t/    /g<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -318,21 +296,17 @@ endfunc
 "结束定义FormartSrc
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""实用设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""恢复文件关闭之前光标位置
 if has("autocmd")
-      autocmd BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \   exe "normal g`\"" |
-          \ endif
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
 
 
 
+
 """"""""""""""""""""""""""""
-"Tag list (ctags)
+"Tag list (ctags) 列出了当前文件中的所有宏, 全局变量, 函数名等
 """""""""""""""""""""""""""""
 ""let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树
 let Tlist_Sort_Type = "name"    " 按照名称排序
@@ -356,27 +330,16 @@ set tags=tags;
 set autochdir
 
 
-" minibufexpl插件的一般设置
+" minibufexpl插件的一般设置 这个插件使用来打开多个文件,tab切换的
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1
 nmap tl :Tlist<cr>
 
-"python补全
-let g:pydiction_location = '~/.vim/after/complete-dict'
-let g:pydiction_menu_height = 20
-let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
 
-
-set iskeyword+=.
 set termencoding=utf-8
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 
 set rtp+=~/.vim/bundle/vundle/
@@ -429,7 +392,7 @@ let g:html_indent_style1 = "inc"
 
 
 """"""""""""""""""""""""""""
-"ctrlp设置
+"ctrlp设置 它可以快速的帮助我们找到项目中的文件 快捷键：ctrl+p
 """"""""""""""""""""""""""""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc,*.png,*.jpg,*.gif  " Windows
@@ -466,7 +429,6 @@ map <expr> <F2> bufloaded("__MRU_Files__")?"q":":MRU\<cr>"
 "let NERDTreeHighlightCursorline=1  "是否高亮显示光标所在行
 "let NERDTreeBookmarksFile='/root/vim/bookmark.txt'  "指写书签文件
 let NERDTreeMouseMode=2 "指定鼠标模式：1为双击打开，3为单击打开，2为目录为单击打开，文件双击打开
-"let NERDTreeQuitOnOpen=1 "打开文件后是否关闭NerdTree窗口
 let NERDTreeShowBookmarks=1        "是否默认显示书签列表
 let NERDTreeShowFiles=1            "是否默认显示文件
 let NERDTreeShowHidden=1           "是否默认显示隐藏文件
@@ -529,32 +491,18 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,gb2312
 set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI:b  "设置英文的字体 :b加粗 :i斜体
 
 
-""""""""""""""""""""""""""""
-"Omincppcomplete
-"""""""""""""""""""""""""""""
-"下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using ""std::string）
-let OmniCpp_DefaultNamespaces = ["std"]
 
 
 """"""""""""""""""""""""""""
 "映射,F4执行ctags命令
 """"""""""""""""""""""""""""
-map <F4> :!/usr/local/bin/ctags -f /webser/winwww/tags -R --languages=php*<cr>
+map <F4> :!sudo /usr/bin/ctags -f /webser/winwww/tags -R --languages=php<cr>
 
 
 """"""""""""""""""""""""""""
 "SearchComplete
 """""""""""""""""""""""""""""
 
-"获取当前文件名
-function GetFileName()
-    return bufname(winbufnr(winnr()))  "获取当前窗口缓冲区的名字
-endfunction
-
-"获取当前时间，精确到分
-function GetDateTime()
-    return strftime("%Y-%m-%d %H:%M")
-endfunction
 
 
 "自动补全（,",{,［
@@ -584,6 +532,15 @@ set pastetoggle=<F>
 ""	endif
 ""endfunction
 
+"获取当前文件名
+function GetFileName()
+    return bufname(winbufnr(winnr()))  "获取当前窗口缓冲区的名字
+endfunction
+
+"获取当前时间，精确到分
+function GetDateTime()
+    return strftime("%Y-%m-%d %H:%M")
+endfunction
 
 "添加文件说明信息
 nnoremap <silent> <C-S-2> ggi/*<CR>
@@ -620,7 +577,7 @@ nnoremap <silent> <F11> i<CR>/*<CR>
 \*******************************************************************************
 \<CR>*/<CR><CR>
 
-inoremap <silent> <F4> <CR>/*<CR>
+inoremap <silent> <F10> <CR>/*<CR>
             \*******************************************************************************
             \<CR>*<CR>* Function :
             \<CR>*<CR>* Input :
@@ -660,10 +617,6 @@ nnoremap <C-k> <C-W>k
 nnoremap <C-h> <C-W>h
 nnoremap <C-l> <C-W>l
 
-""恢复文件关闭之前光标位置
-if has("autocmd")
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
 
 nnoremap ,ms  i#include <stdio.h><CR>#include <string.h><CR>
             \#include <stdlib.h><CR>#include <sys/types.h><CR>#include <sys/stat.h><CR>
